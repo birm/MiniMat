@@ -4,7 +4,7 @@
   "description": "Javascript library for matrix holding, representation, and processing",
   "main": "MiniMat.js",
   "scripts": {
-    "test": "node TestMiniMat.js"
+    "test": "node MiniMat.js"
   },
   "repository": {
     "type": "git",
