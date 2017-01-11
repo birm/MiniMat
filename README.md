@@ -1,4 +1,6 @@
 # MiniMat.js
+[![npm version](https://badge.fury.io/js/minimat.js.svg)](https://badge.fury.io/js/minimat.js)
+
 Javascript library for matrix holding, representation, and processing
 
 Live releases [on npm here](https://www.npmjs.com/package/minimat.js)
