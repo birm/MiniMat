@@ -2,6 +2,9 @@
   "name": "minimat.js",
   "version": "0.1.3",
   "description": "Javascript library for matrix holding, representation, and processing",
+    "devDependencies": {
+      "tape" : "latest"
+  },
   "main": "MiniMat.js",
   "scripts": {
     "test": "node MiniMat.js"
