@@ -49,7 +49,7 @@ class MiniMat {
 
     static Eye(len){
         len = parseInt(len);
-        var data = new Array(parseInt(len**2));
+        var data = new Array(parseInt(Math.pow(len,2)));
         data.fill(0);
         for (var x = 0; x < len; x ++) {
             var pos = x*len - x;
@@ -58,3 +58,41 @@ class MiniMat {
         return new this(data, len, len)
     }
 }
+
+// Now it's time for some tests
+
+var test = require('tape')
+
+// just start with the simplest ones
+
+// manually make a 2x2 with [1,2,3,4]
+test( 'default inits test', function(t) {
+    t.plan(5);
+
+
+    t.doesNotThrow( function() {
+        onetwothreefour = new MiniMat([1,2,3,4], 2, 2);
+    }, '*', "new MiniMat() construction");
+
+    // make an identity of size 3
+    t.doesNotThrow( function() {
+        eye3 = MiniMat.Eye(3);
+    }, '*', "Eye construction");
+
+    // Make a 4x4 matrix of all 4.18 values
+    t.doesNotThrow( function() {
+        constmat = MiniMat.FilledMat(4, 4, 4.18);
+    }, '*', "FilledMat construction");
+
+    // make a 5x5 zerores matrix
+    t.doesNotThrow( function() {
+        zeromat = MiniMat.Zeroes(5,5);
+    }, '*', "Zeroes construction");
+
+    // make a 6x7 of all ones
+    t.doesNotThrow( function() {
+        onesmat = MiniMat.Ones(6,7);
+    }, '*', "Ones construction");
+});
+
+//TODO add some expected failures
