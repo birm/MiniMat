@@ -1,0 +1,22 @@
+{
+  "name": "minimat.js",
+  "description": "Javascript library for matrix holding, representation, and processing",
+  "main": "MiniMat.js",
+  "authors": [
+    "Ryan Birmingham"
+  ],
+  "license": "GPL-3.0",
+  "keywords": [
+    "matrix",
+    "numerical",
+    "math"
+  ],
+  "homepage": "https://github.com/birm/MiniMat.js",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
