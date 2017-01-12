@@ -108,7 +108,28 @@ class MiniMat {
         console.warn("[Not Implemented Error] Setting columns in place is not yet supported. Make a new matrix with the changes.");
     }
 
-    // get a column by index, a bit harder
+    // elementwise operations
+
+    // check that the sizes are the same for these
+    same_dims(mat){
+      return ((this.x_len == mat.x_len) && (this.y_len == mat.y_len));
+    }
+    // in place elementwise addition
+    add(mat){
+      // take in a matrix of the same dimensions
+      // this is an in place operation, so the object is changed.
+
+      // make sure they're the same dimensions
+      if (!(this.same_dims(mat))){
+        throw new Error("[Data Error] Matrices must be the same dimensionality to add elementwise.");
+      }
+      var tdat=0;
+      for (var x=0; x < this.data.length; x++){
+        tdat = parseFloat(this.data[x]) + parseFloat(mat.data[x]);
+        this.data[x]=tdat;
+      }
+      return this;
+    }
 
     // make a matrix filled with one value
     static FilledMat(x_len, y_len, value=1) {
