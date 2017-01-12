@@ -28,6 +28,20 @@ class MiniMat {
         this.data = data;
     }
 
+
+    // give a string value for either human or machine inspection
+    toString(machine=false) {
+        if (machine == false) {
+            var outstr = this.x_len + " by " + this.y_len + " MiniMat: \n";
+            for (var x = 0; x < this.x_len; x++){
+                outstr = outstr + "[" + this.data.slice(x * this.y_len, (x+1) * this.y_len).toString() + "]\n";
+            }
+            return outstr;
+        }else {
+            return "MiniMat{(" + this.data.toString() + ")" + this.x_len + "," + this.y_len + "}";
+        }
+    }
+
     // get a row or rows by index; easy because column major
     row(index, to_index=-1) {
         // index should be the first row index
@@ -98,7 +112,7 @@ var test = require('tape')
 
 // manually make a 2x2 with [1,2,3,4]
 test( 'default inits test', function(t) {
-    t.plan(7);
+    t.plan(8);
 
 
     t.doesNotThrow( function() {
@@ -126,10 +140,13 @@ test( 'default inits test', function(t) {
     }, '*', "Ones construction");
 
     // take a ones mat and try getting a row
-    t.equal( MiniMat.Ones(3,4).row(0), new MiniMat([1,1,1,1],1,4), "Get a row of four ones")
+    t.equal( MiniMat.Ones(3,4).row(0).toString(true), new MiniMat([1,1,1,1],1,4).toString(true), "Get a row of four ones")
+
+    // while we're at it, test the human representation equality too.
+    t.equal( MiniMat.Ones(3,4).row(0).toString(), new MiniMat([1,1,1,1],1,4).toString(), "Get a row of four ones")
 
     // take a filled mat and try getting two rows
-    t.equal( MiniMat.FilledMat(3, 2, 4).row(0,1), new MiniMat([4,4,4,4],2,2), "Get two rows of two fours")
+    t.equal( MiniMat.FilledMat(3, 2, 4).row(0,1).toString(true), new MiniMat([4,4,4,4],2,2).toString(true), "Get two rows of two fours")
 });
 
 //TODO add some expected failures
