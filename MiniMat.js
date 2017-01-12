@@ -34,10 +34,10 @@ class MiniMat {
         // to_index (optional) should be the last row index
 
         // sanitize all we use
-        x_len = parseInt(this.x_len);
-        y_len = parseInt(this.y_len);
-        index = parseInt(index);
-        to_index = parseInt(index);
+        var x_len = parseInt(this.x_len);
+        var y_len = parseInt(this.y_len);
+        var index = parseInt(index);
+        var to_index = parseInt(index);
         // to_index==0 means we just want one row
         if (last_ind == 0) {
             last_ind=index;
@@ -46,9 +46,9 @@ class MiniMat {
         if (last_ind >= x_len || index >= x_len){
             throw new Error("Rows between " + index + " and " + to_index + " are not all within the " + x_len + " rows in the matrix.");
         }
-        first_data_pos = Math.min(index, to_index)*x_len;
-        last_data_pos = ((Math.max(index, to_index)+1)*(x_len))-1;
-        return new this(Math.abs(to_index-index)+1, y_len, this.data);
+        var first_data_pos = Math.min(index, to_index)*x_len;
+        var last_data_pos = ((Math.max(index, to_index)+1)*(x_len))-1;
+        return new MiniMat(Math.abs(to_index-index)+1, y_len, this.data);
     }
 
     // does nothing but warn now, but set row.
