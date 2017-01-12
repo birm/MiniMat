@@ -29,7 +29,7 @@ class MiniMat {
     }
 
     // get a row or rows by index; easy because column major
-    function row(index, to_index=0) {
+    get row(index, to_index=0) {
         // index should be the first row index
         // to_index (optional) should be the last row index
 
@@ -49,6 +49,11 @@ class MiniMat {
         first_data_pos = Math.min(index, to_index)*x_len;
         last_data_pos = ((Math.max(index, to_index)+1)*(x_len))-1;
         return MiniMat(Math.abs(to_index-index)+1, y_len, this.data);
+    }
+
+    // does nothing but warn now, but set row.
+    set row(index, to_index=0) {
+        console.warn("Setting rows in place is not yet supported.");
     }
 
     // get a column by index, a bit harder
