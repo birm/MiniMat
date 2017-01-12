@@ -12,48 +12,49 @@ class MiniMat {
         }
         if ((typeof(x_len) != 'number') && (typeof(y_len) != 'number')) {
             // types don't allign, and we'll try to cast; warn
-            console.warn("Your x_len and y_len arguments to MiniMat should be Numbers. Since they are not, they will be cast as Numbers via parseInt().");
+            console.warn("[TypeWarning] Your x_len and y_len arguments to MiniMat should be Numbers. Since they are not, they will be cast as Numbers via parseInt().");
         } else if (typeof(data) != 'Array' && !data.every(isNumberType)) {
             // the data is the wrong type; error
-            throw new Error("Data is either not an array, or has non-numeric elements.");
+            throw new Error("[Data Error] Data is either not an array, or has non-numeric elements.");
         }
         x_len = parseInt(x_len);
         y_len = parseInt(y_len);
         // error if wrong amount of data
         if (!(x_len * y_len == data.length)){
-            throw new Error("Data length should be " + parseInt(x_len * y_len) + " and instead is " + parseInt(data.length) + ".");
+            throw new Error("[Data Error] Data length should be " + parseInt(x_len * y_len) + " and instead is " + parseInt(data.length) + ".");
         }
-        this.x_len = x_len;
-        this.y_len = y_len;
+        this.x_len = x_len; // number rows
+        this.y_len = y_len; // number cols
         this.data = data;
     }
 
     // get a row or rows by index; easy because column major
-    row(index, to_index=0) {
+    row(index, to_index=-1) {
         // index should be the first row index
         // to_index (optional) should be the last row index
 
+        // if to_index is unset or -1, only the index row is returned
+        if (to_index == -1) {
+            to_index=index;
+        }
         // sanitize all we use
         var x_len = parseInt(this.x_len);
         var y_len = parseInt(this.y_len);
         var index = parseInt(index);
-        var to_index = parseInt(index);
-        // to_index==0 means we just want one row
-        if (to_index == 0) {
-            to_index=index;
-        }
+        var to_index = parseInt(to_index);
+
         // assure all in range are accessible
         if (to_index >= x_len || index >= x_len){
-            throw new Error("Rows between " + index + " and " + to_index + " are not all within the " + x_len + " rows in the matrix.");
+            throw new Error("[Row Index Error] Rows between " + index + " and " + to_index + " are not all within the " + x_len + " rows in the matrix.");
         }
-        var first_data_pos = Math.min(index, to_index)*x_len;
-        var last_data_pos = ((Math.max(index, to_index)+1)*(x_len))-1;
-        return new MiniMat(this.data.slice(first_data_pos,last_data_pos), Math.abs(to_index-index)+1, y_len);
+        var first_data_pos = Math.min(index, to_index)*y_len;
+        var last_data_pos = ((Math.max(index, to_index)+1) * (y_len));
+        return new MiniMat(this.data.slice(first_data_pos, last_data_pos), Math.abs(to_index-index)+1, y_len);
     }
 
     // does nothing but warn now, but set row.
     row_set(index, to_index=0, data=[]) {
-        console.warn("Setting rows in place is not yet supported.");
+        console.warn("[Not Implemented Error] Setting rows in place is not yet supported. Make a new matrix with the changes.");
     }
 
     // get a column by index, a bit harder
