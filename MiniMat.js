@@ -61,7 +61,7 @@ class MiniMat {
         if (to_index >= x_len || index >= x_len){
             throw new Error("[Row Index Error] Rows between " + index + " and " + to_index + " are not all within the " + x_len + " rows in the matrix.");
         }
-        var first_data_pos = Math.min(index, to_index)*y_len;
+        var first_data_pos = Math.min(index, to_index) * y_len;
         var last_data_pos = ((Math.max(index, to_index)+1) * (y_len));
         return new MiniMat(this.data.slice(first_data_pos, last_data_pos), Math.abs(to_index-index)+1, y_len);
     }
@@ -69,6 +69,43 @@ class MiniMat {
     // does nothing but warn now, but set row.
     row_set(index, to_index=0, data=[]) {
         console.warn("[Not Implemented Error] Setting rows in place is not yet supported. Make a new matrix with the changes.");
+    }
+
+    // get a column or columns by index; hard because column major
+    col(index, to_index=-1) {
+        // index should be the first row index
+        // to_index (optional) should be the last row index
+
+        // if to_index is unset or -1, only the index row is returned
+        if (to_index == -1) {
+            to_index=index;
+        }
+
+        // sanitize all we use
+        var x_len = parseInt(this.x_len);
+        var y_len = parseInt(this.y_len);
+        var index = Math.min(parseInt(index), parseInt(to_index));
+        var to_index = Math.max(parseInt(index), parseInt(to_index));
+
+        // assure all in range are accessible
+        if (to_index >= y_len || index < 0){
+            throw new Error("[Row Index Error] Columns between " + index + " and " + to_index + " are not all within the " + y_len + " columns in the matrix.");
+        }
+
+        // now we need to actually get the fields in data
+        var out_data = [];
+        // for each col to evaluate
+        for (var x=0; x < x_len; x++){
+            // for each data position
+            out_data = out_data.concat(this.data.slice((y_len * x) + index, (y_len * x) + to_index + 1));
+        }
+
+        return new MiniMat(out_data, x_len, Math.abs(to_index-index)+1);
+    }
+
+    // does nothing but warn now, but set row.
+    col_set(index, to_index=0, data=[]) {
+        console.warn("[Not Implemented Error] Setting columns in place is not yet supported. Make a new matrix with the changes.");
     }
 
     // get a column by index, a bit harder
@@ -112,7 +149,7 @@ var test = require('tape')
 
 // manually make a 2x2 with [1,2,3,4]
 test( 'default inits test', function(t) {
-    t.plan(8);
+    t.plan(10);
 
 
     t.doesNotThrow( function() {
@@ -140,13 +177,19 @@ test( 'default inits test', function(t) {
     }, '*', "Ones construction");
 
     // take a ones mat and try getting a row
-    t.equal( MiniMat.Ones(3,4).row(0).toString(true), new MiniMat([1,1,1,1],1,4).toString(true), "Get a row of four ones")
+    t.equal( MiniMat.Ones(3,4).row(0).toString(true), new MiniMat([1,1,1,1],1,4).toString(true), "Get a row of four ones");
 
     // while we're at it, test the human representation equality too.
-    t.equal( MiniMat.Ones(3,4).row(0).toString(), new MiniMat([1,1,1,1],1,4).toString(), "Get a row of four ones")
+    t.equal( MiniMat.Ones(3,4).row(0).toString(), new MiniMat([1,1,1,1],1,4).toString(), "Get a row of four ones");
 
     // take a filled mat and try getting two rows
-    t.equal( MiniMat.FilledMat(3, 2, 4).row(0,1).toString(true), new MiniMat([4,4,4,4],2,2).toString(true), "Get two rows of two fours")
+    t.equal( MiniMat.FilledMat(3, 2, 4).row(0,1).toString(true), new MiniMat([4,4,4,4],2,2).toString(true), "Get two rows of two fours");
+
+    // take a ones mat and try getting a column
+    t.equal( MiniMat.Ones(3,4).col(0).toString(true), new MiniMat([1,1,1],3,1).toString(true), "Get a col of three ones");
+
+    // take a filled mat and try getting two rows
+    t.equal( MiniMat.FilledMat(3, 2, 4).col(0,1).toString(true), new MiniMat([4,4,4,4,4,4],3,2).toString(true), "Get two rows of two fours");
 });
 
 //TODO add some expected failures
