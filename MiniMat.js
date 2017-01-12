@@ -29,7 +29,7 @@ class MiniMat {
     }
 
     // get a row or rows by index; easy because column major
-    get row(index, to_index=0) {
+    row(index, to_index=0) {
         // index should be the first row index
         // to_index (optional) should be the last row index
 
@@ -52,7 +52,7 @@ class MiniMat {
     }
 
     // does nothing but warn now, but set row.
-    set row(index, to_index=0) {
+    row_set(index, to_index=0, data=[]) {
         console.warn("Setting rows in place is not yet supported.");
     }
 
