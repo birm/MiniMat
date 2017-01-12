@@ -108,7 +108,54 @@ class MiniMat {
         console.warn("[Not Implemented Error] Setting columns in place is not yet supported. Make a new matrix with the changes.");
     }
 
-    // get a column by index, a bit harder
+    // elementwise operations
+
+    // check that the sizes are the same for these
+    same_dims(mat){
+      return ((this.x_len == mat.x_len) && (this.y_len == mat.y_len));
+    }
+    // in place elementwise addition
+    add(mat){
+      // take in a matrix of the same dimensions
+      // this is an in place operation, so the object is changed.
+
+      // make sure they're the same dimensions
+      if (!(this.same_dims(mat))){
+        throw new Error("[Data Error] Matrices must be the same dimensionality to add elementwise.");
+      }
+      var tdat=0;
+      for (var x=0; x < this.data.length; x++){
+        tdat = parseFloat(this.data[x]) + parseFloat(mat.data[x]);
+        this.data[x]=tdat;
+      }
+      return this;
+    }
+
+    // in place schur product
+    schur(mat){
+      // take in a matrix of the same dimensions
+      // this is an in place operation, so the object is changed.
+
+      // make sure they're the same dimensions
+      if (!(this.same_dims(mat))){
+        throw new Error("[Data Error] Matrices must be the same dimensionality for schur product.");
+      }
+      var tdat=0;
+      for (var x=0; x < this.data.length; x++){
+        tdat = parseFloat(this.data[x]) * parseFloat(mat.data[x]);
+        this.data[x]=tdat;
+      }
+      return this;
+    }
+
+    // emult means elementwise multiplication, so alias it
+    emult(mat){
+      return this.schur(mat);
+    }
+    // hadamard is also schur
+    hadamard(mat){
+      return this.schur(mat);
+    }
 
     // make a matrix filled with one value
     static FilledMat(x_len, y_len, value=1) {
@@ -149,7 +196,7 @@ var test = require('tape')
 
 // manually make a 2x2 with [1,2,3,4]
 test( 'default inits test', function(t) {
-    t.plan(10);
+    t.plan(12);
 
 
     t.doesNotThrow( function() {
@@ -190,6 +237,12 @@ test( 'default inits test', function(t) {
 
     // take a filled mat and try getting two rows
     t.equal( MiniMat.FilledMat(3, 2, 4).col(0,1).toString(true), new MiniMat([4,4,4,4,4,4],3,2).toString(true), "Get two rows of two fours");
+
+    // test in place add
+    t.equal( MiniMat.FilledMat(3, 2, 4).add(MiniMat.FilledMat(3, 2, 4)).toString(true), MiniMat.FilledMat(3, 2, 8).toString(true), "Test matrix sums")
+
+    // test in place schur
+    t.equal( MiniMat.FilledMat(3, 2, 4).schur(MiniMat.FilledMat(3, 2, 4)).toString(true), MiniMat.FilledMat(3, 2, 16).toString(true), "Test matrix schur product")
 });
 
 //TODO add some expected failures
