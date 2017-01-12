@@ -192,7 +192,7 @@ var test = require('tape')
 
 // manually make a 2x2 with [1,2,3,4]
 test( 'default inits test', function(t) {
-    t.plan(10);
+    t.plan(12);
 
 
     t.doesNotThrow( function() {
@@ -233,6 +233,12 @@ test( 'default inits test', function(t) {
 
     // take a filled mat and try getting two rows
     t.equal( MiniMat.FilledMat(3, 2, 4).col(0,1).toString(true), new MiniMat([4,4,4,4,4,4],3,2).toString(true), "Get two rows of two fours");
+
+    // test in place add
+    t.equal( MiniMat.FilledMat(3, 2, 4).add(MiniMat.FilledMat(3, 2, 4)), MiniMat.FilledMat(3, 2, 8), "Test matrix sums")
+
+    // test in place schur
+    t.equal( MiniMat.FilledMat(3, 2, 4).add(MiniMat.FilledMat(3, 2, 4)), MiniMat.FilledMat(3, 2, 16), "Test matrix schur product")
 });
 
 //TODO add some expected failures
