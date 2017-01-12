@@ -43,7 +43,7 @@ class MiniMat {
             last_ind=index;
         }
         // assure all in range are accessible
-        if (last_ind >= x_len || index >= x_len){
+        if (to_index >= x_len || index >= x_len){
             throw new Error("Rows between " + index + " and " + to_index + " are not all within the " + x_len + " rows in the matrix.");
         }
         var first_data_pos = Math.min(index, to_index)*x_len;
