@@ -12,48 +12,63 @@ class MiniMat {
         }
         if ((typeof(x_len) != 'number') && (typeof(y_len) != 'number')) {
             // types don't allign, and we'll try to cast; warn
-            console.warn("Your x_len and y_len arguments to MiniMat should be Numbers. Since they are not, they will be cast as Numbers via parseInt().");
+            console.warn("[TypeWarning] Your x_len and y_len arguments to MiniMat should be Numbers. Since they are not, they will be cast as Numbers via parseInt().");
         } else if (typeof(data) != 'Array' && !data.every(isNumberType)) {
             // the data is the wrong type; error
-            throw new Error("Data is either not an array, or has non-numeric elements.");
+            throw new Error("[Data Error] Data is either not an array, or has non-numeric elements.");
         }
         x_len = parseInt(x_len);
         y_len = parseInt(y_len);
         // error if wrong amount of data
         if (!(x_len * y_len == data.length)){
-            throw new Error("Data length should be " + parseInt(x_len * y_len) + " and instead is " + parseInt(data.length) + ".");
+            throw new Error("[Data Error] Data length should be " + parseInt(x_len * y_len) + " and instead is " + parseInt(data.length) + ".");
         }
-        this.x_len = x_len;
-        this.y_len = y_len;
+        this.x_len = x_len; // number rows
+        this.y_len = y_len; // number cols
         this.data = data;
     }
 
+
+    // give a string value for either human or machine inspection
+    toString(machine=false) {
+        if (machine == false) {
+            var outstr = this.x_len + " by " + this.y_len + " MiniMat: \n";
+            for (var x = 0; x < this.x_len; x++){
+                outstr = outstr + "[" + this.data.slice(x * this.y_len, (x+1) * this.y_len).toString() + "]\n";
+            }
+            return outstr;
+        }else {
+            return "MiniMat{(" + this.data.toString() + ")" + this.x_len + "," + this.y_len + "}";
+        }
+    }
+
     // get a row or rows by index; easy because column major
-    row(index, to_index=0) {
+    row(index, to_index=-1) {
         // index should be the first row index
         // to_index (optional) should be the last row index
 
+        // if to_index is unset or -1, only the index row is returned
+        if (to_index == -1) {
+            to_index=index;
+        }
         // sanitize all we use
-        x_len = parseInt(this.x_len);
-        y_len = parseInt(this.y_len);
-        index = parseInt(index);
-        to_index = parseInt(index);
-        // to_index==0 means we just want one row
-        if (last_ind == 0) {
-            last_ind=index;
-        }
+        var x_len = parseInt(this.x_len);
+        var y_len = parseInt(this.y_len);
+        var index = parseInt(index);
+        var to_index = parseInt(to_index);
+
         // assure all in range are accessible
-        if (last_ind >= x_len || index >= x_len){
-            throw new Error("Rows between " + index + " and " + to_index + " are not all within the " + x_len + " rows in the matrix.");
+        if (to_index >= x_len || index >= x_len){
+            throw new Error("[Row Index Error] Rows between " + index + " and " + to_index + " are not all within the " + x_len + " rows in the matrix.");
         }
-        first_data_pos = Math.min(index, to_index)*x_len;
-        last_data_pos = ((Math.max(index, to_index)+1)*(x_len))-1;
-        return MiniMat(Math.abs(to_index-index)+1, y_len, this.data);
+        var first_data_pos = Math.min(index, to_index)*y_len;
+        var last_data_pos = ((Math.max(index, to_index)+1) * (y_len));
+        return new MiniMat(this.data.slice(first_data_pos, last_data_pos), Math.abs(to_index-index)+1, y_len);
     }
 
     // does nothing but warn now, but set row.
     row_set(index, to_index=0, data=[]) {
-        console.warn("Setting rows in place is not yet supported.");
+        console.warn("[Not Implemented Error] Setting rows in place is not yet supported. Make a new matrix with the changes.");
     }
 
     // get a column by index, a bit harder
@@ -97,7 +112,7 @@ var test = require('tape')
 
 // manually make a 2x2 with [1,2,3,4]
 test( 'default inits test', function(t) {
-    t.plan(5);
+    t.plan(8);
 
 
     t.doesNotThrow( function() {
@@ -123,6 +138,15 @@ test( 'default inits test', function(t) {
     t.doesNotThrow( function() {
         onesmat = MiniMat.Ones(6,7);
     }, '*', "Ones construction");
+
+    // take a ones mat and try getting a row
+    t.equal( MiniMat.Ones(3,4).row(0).toString(true), new MiniMat([1,1,1,1],1,4).toString(true), "Get a row of four ones")
+
+    // while we're at it, test the human representation equality too.
+    t.equal( MiniMat.Ones(3,4).row(0).toString(), new MiniMat([1,1,1,1],1,4).toString(), "Get a row of four ones")
+
+    // take a filled mat and try getting two rows
+    t.equal( MiniMat.FilledMat(3, 2, 4).row(0,1).toString(true), new MiniMat([4,4,4,4],2,2).toString(true), "Get two rows of two fours")
 });
 
 //TODO add some expected failures
