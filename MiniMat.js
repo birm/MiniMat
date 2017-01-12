@@ -48,7 +48,7 @@ class MiniMat {
         }
         var first_data_pos = Math.min(index, to_index)*x_len;
         var last_data_pos = ((Math.max(index, to_index)+1)*(x_len))-1;
-        return new MiniMat(this.data.slice(first_data_pos:last_data_pos), Math.abs(to_index-index)+1, y_len);
+        return new MiniMat(this.data.slice(first_data_pos,last_data_pos), Math.abs(to_index-index)+1, y_len);
     }
 
     // does nothing but warn now, but set row.
