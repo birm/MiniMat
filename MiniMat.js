@@ -40,7 +40,7 @@ class MiniMat {
         var to_index = parseInt(index);
         // to_index==0 means we just want one row
         if (to_index == 0) {
-            last_ind=index;
+            to_index=index;
         }
         // assure all in range are accessible
         if (to_index >= x_len || index >= x_len){
