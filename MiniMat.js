@@ -150,7 +150,11 @@ class MiniMat {
 
     // emult means elementwise multiplication, so alias it
     emult(mat){
-      this.schur(mat);
+      return this.schur(mat);
+    }
+    // hadamard is also schur
+    hadamard(mat){
+      return this.schur(mat);
     }
 
     // make a matrix filled with one value
