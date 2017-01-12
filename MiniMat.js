@@ -21,12 +21,37 @@ class MiniMat {
         y_len = parseInt(y_len);
         // error if wrong amount of data
         if (!(x_len * y_len == data.length)){
-            throw new Error("MiniMat data length should be " + parseInt(x_len * y_len) + " and instead is " + parseInt(data.length) + ".");
+            throw new Error("Data length should be " + parseInt(x_len * y_len) + " and instead is " + parseInt(data.length) + ".");
         }
         this.x_len = x_len;
         this.y_len = y_len;
         this.data = data;
     }
+
+    // get a row or rows by index; easy because column major
+    function row(index, to_index=0) {
+        // index should be the first row index
+        // to_index (optional) should be the last row index
+
+        // sanitize all we use
+        x_len = parseInt(this.x_len);
+        y_len = parseInt(this.y_len);
+        index = parseInt(index);
+        to_index = parseInt(index);
+        // to_index==0 means we just want one row
+        if (last_ind == 0) {
+            last_ind=index;
+        }
+        // assure all in range are accessible
+        if (last_ind >= x_len || index >= x_len){
+            throw new Error("Rows between " + index + " and " + to_index + " are not all within the " + x_len + " rows in the matrix.");
+        }
+        first_data_pos = Math.min(index, to_index)*x_len;
+        last_data_pos = ((Math.max(index, to_index)+1)*(x_len))-1;
+        return MiniMat(Math.abs(to_index-index)+1, y_len, this.data);
+    }
+
+    // get a column by index, a bit harder
 
     // make a matrix filled with one value
     static FilledMat(x_len, y_len, value=1) {
