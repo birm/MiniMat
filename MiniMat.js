@@ -97,7 +97,7 @@ var test = require('tape')
 
 // manually make a 2x2 with [1,2,3,4]
 test( 'default inits test', function(t) {
-    t.plan(5);
+    t.plan(7);
 
 
     t.doesNotThrow( function() {
@@ -123,6 +123,18 @@ test( 'default inits test', function(t) {
     t.doesNotThrow( function() {
         onesmat = MiniMat.Ones(6,7);
     }, '*', "Ones construction");
+
+    // take a ones mat and try getting a row
+    t.equal( function () {
+        onesmat = MiniMat.Ones(3,4);
+        return onesmat.row(0);
+    }, new MiniMat([1,1,1,1],1,4), "Get a row of four ones")
+
+    // take a filled mat and try getting two rows
+    t.equal( function () {
+        foursmat = FilledMat(3, 2, 4);
+        return onesmat.row(0,1);
+    }, new MiniMat([4,4,4,4],2,2), "Get two rows of two fours")
 });
 
 //TODO add some expected failures
