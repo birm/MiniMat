@@ -131,6 +131,28 @@ class MiniMat {
       return this;
     }
 
+    // in place schur product
+    schur(mat){
+      // take in a matrix of the same dimensions
+      // this is an in place operation, so the object is changed.
+
+      // make sure they're the same dimensions
+      if (!(this.same_dims(mat))){
+        throw new Error("[Data Error] Matrices must be the same dimensionality for schur product.");
+      }
+      var tdat=0;
+      for (var x=0; x < this.data.length; x++){
+        tdat = parseFloat(this.data[x]) * parseFloat(mat.data[x]);
+        this.data[x]=tdat;
+      }
+      return this;
+    }
+
+    // emult means elementwise multiplication, so alias it
+    emult(mat){
+      this.schur(mat);
+    }
+
     // make a matrix filled with one value
     static FilledMat(x_len, y_len, value=1) {
         x_len = parseInt(x_len);
