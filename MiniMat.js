@@ -1,3 +1,8 @@
+// need a sum reduce function many places
+function radd(x,y){
+    return x+y;
+}
+
 class MiniMat {
     constructor(data, x_len, y_len=1) {
         // data should be an array containing all data, column major
@@ -153,9 +158,6 @@ class MiniMat {
 
     // get trace
     trace(){
-        function radd(x,y){
-            return x+y;
-        }
         return parseFloat((this.data.reduce(radd,0)));
     }
     // elementwise operations
@@ -216,17 +218,28 @@ class MiniMat {
     // normalize by vectors
     normalize(rowvecs=false){
         // run with false for column vectors, true for row vectors
-        var x_len = parseFloat(this.x_len)
-        var y_len = parseFloat(this.y_len)
+        var x_len = parseFloat(this.x_len);
+        var y_len = parseFloat(this.y_len);
         if (rowvecs){
             for (var x=0; x < y_len; x++){
-                var vec = this.row(x);
+                var vec = this.row(x).data;
+                var vecsum = vec.reduce(radd,0);
+                var div_vecsum = function(val){
+                    return val/vecsum;
+                }
+                this.row_set(x, vec.map(div_vecsum));
             }
         } else {
             for (var x=0; x < y_len; x++){
-                var vec = this.col(x);
+                var vec = this.col(x).data;
+                var vecsum = vec.reduce(radd,0);
+                var div_vecsum = function(val){
+                    return val/vecsum;
+                }
+                this.col_set(x, vec.map(div_vecsum));
             }
         }
+        return this;
     }
     // returns the elementwise inverse
     elem_inv(){
@@ -240,10 +253,6 @@ class MiniMat {
         // sanitize numerical from this
         var x_len = parseInt(this.x_len);
 
-        // need a sum reduce function
-        function radd(x,y){
-            return x+y;
-        }
         // some special norms
         if (l==1./0 || l=="inf"){
             // infinity norm
@@ -315,7 +324,7 @@ var test = require('tape')
 
 // manually make a 2x2 with [1,2,3,4]
 test( 'default inits test', function(t) {
-    t.plan(18);
+    t.plan(19);
 
 
     t.doesNotThrow( function() {
@@ -379,6 +388,9 @@ test( 'default inits test', function(t) {
 
     // test trace
     t.equal(MiniMat.Eye(4).trace() , 4, "Test trace");
+
+    // test norms
+    t.equal(MiniMat.FilledMat(2, 2, 4).normalize(false).toString(true), MiniMat.FilledMat(2, 2, 4).normalize(true).toString(true), "Test normalization");
 });
 
 //TODO add some expected failures
