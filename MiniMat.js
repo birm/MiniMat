@@ -67,8 +67,21 @@ class MiniMat {
     }
 
     // does nothing but warn now, but set row.
-    row_set(index, to_index=0, data=[]) {
-        console.warn("[Not Implemented Error] Setting rows in place is not yet supported. Make a new matrix with the changes.");
+    row_set(index, data=[], to_index=-1) {
+        if (to_index == -1) {
+            to_index=index;
+        }
+        // sanitize all we use
+        var x_len = parseInt(this.x_len);
+        var y_len = parseInt(this.y_len);
+        var index = parseInt(index);
+        var to_index = parseInt(to_index);
+        var first_data_pos = Math.min(index, to_index) * y_len;
+        var last_data_pos = ((Math.max(index, to_index)+1) * (y_len));
+        for (var x = 0; x < last_data_pos-first_data_pos; x++){
+            this.data[x+first_data_pos]=data[x];
+        }
+        return this
     }
 
     // get a column or columns by index; hard because column major
@@ -104,8 +117,26 @@ class MiniMat {
     }
 
     // does nothing but warn now, but set row.
-    col_set(index, to_index=0, data=[]) {
-        console.warn("[Not Implemented Error] Setting columns in place is not yet supported. Make a new matrix with the changes.");
+    col_set(index, data=[], to_index=-1) {
+        if (to_index == -1) {
+            to_index=index;
+        }
+        // sanitize all we use
+        var x_len = parseInt(this.x_len);
+        var y_len = parseInt(this.y_len);
+        var index = parseInt(index);
+        var to_index = parseInt(to_index);
+        // for each col to change
+        for (var x=0; x <= to_index-index; x++){
+            for (var y = 0; y < y_len; y++){
+                // position in new data to get
+                var new_pos = parseInt(x*y_len+y)
+                // position in old data to replace
+                var old_pos = parseInt(index+x+(y_len*y));
+                this.data[old_pos]=data[new_pos]
+            }
+        }
+        return this
     }
 
     // get diag
@@ -182,6 +213,21 @@ class MiniMat {
         return this;
     }
 
+    // normalize by vectors
+    normalize(rowvecs=false){
+        // run with false for column vectors, true for row vectors
+        var x_len = parseFloat(this.x_len)
+        var y_len = parseFloat(this.y_len)
+        if (rowvecs){
+            for (var x=0; x < y_len; x++){
+                var vec = this.row(x);
+            }
+        } else {
+            for (var x=0; x < y_len; x++){
+                var vec = this.col(x);
+            }
+        }
+    }
     // returns the elementwise inverse
     elem_inv(){
         var inv_fcn = function (a) {
