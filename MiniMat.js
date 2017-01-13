@@ -170,6 +170,37 @@ class MiniMat {
         }
         return this.apply(inv_fcn);
     }
+    // get the matrix norm of a level passed in, default 2
+    norm(l=2){
+        // sanitize numerical from this
+        var x_len = parseInt(this.x_len);
+
+        // need a sum reduce function
+        function radd(x,y){
+            return x+y;
+        }
+        // some special norms
+        if (l==1./0 || l=="inf"){
+            // infinity norm
+            // get the max value for inf vec norm for this vec
+            return parseFloat(Math.max.apply(null, this.data));
+        } else if (l="fro") {
+            // frobenius norm
+            // root of sum of absolute squared
+            var abs_sq = function (val) {
+                return Math.abs(Math.pow(val,2));
+            }
+            return parseFloat(Math.sqrt(this.data.map(abs_sq).reduce(radd,0)));
+        } else {
+            // l-? norm
+            l = parseInt(l);
+            // lth root of sum of lth power
+            var lpow = function (val) {
+                return (Math.pow(val,l));
+            }
+            return parseFloat(Math.pow(this.data.map(lpow).reduce(radd,0),1./l));
+        }
+    }
 
     // emult means elementwise multiplication, so alias it
     emult(mat){
@@ -219,7 +250,7 @@ var test = require('tape')
 
 // manually make a 2x2 with [1,2,3,4]
 test( 'default inits test', function(t) {
-    t.plan(13);
+    t.plan(16);
 
 
     t.doesNotThrow( function() {
@@ -270,6 +301,13 @@ test( 'default inits test', function(t) {
     // test apply via inverse
     t.equal( MiniMat.FilledMat(2, 2, 4).elem_inv().toString(true), MiniMat.FilledMat(2, 2, 0.25).toString(true), "Test apply and inverse");
 
+    // test norms
+    // l-2 norm
+    t.equal(MiniMat.FilledMat(2, 2, 4).norm() , 8, "Test l-2 norm");
+    // fro norm
+    t.equal(MiniMat.FilledMat(2, 2, 4).norm("fro") , 8, "Test fro norm");
+    // inf norm
+    t.equal(MiniMat.FilledMat(2, 2, 4).norm(1./0) , 4, "Test inf norm");
 });
 
 //TODO add some expected failures
