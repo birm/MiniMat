@@ -261,7 +261,7 @@ var test = require('tape')
 
 // manually make a 2x2 with [1,2,3,4]
 test( 'default inits test', function(t) {
-    t.plan(16);
+    t.plan(17);
 
 
     t.doesNotThrow( function() {
