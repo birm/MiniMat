@@ -165,7 +165,7 @@ class MiniMat {
 
     // returns the elementwise inverse
     elem_inv(){
-        inv_fcn = function(a) {
+        var inv_fcn = function (a) {
             return parseFloat(1./a);
         }
         return this.apply(inv_fcn);
