@@ -119,6 +119,14 @@ class MiniMat {
         }
         return new MiniMat(outvec, 1, outlen);
     }
+
+    // get trace
+    trace(){
+        function radd(x,y){
+            return x+y;
+        }
+        return parseFloat((this.data.reduce(radd,0)));
+    }
     // elementwise operations
 
     // check that the sizes are the same for these
@@ -321,7 +329,10 @@ test( 'default inits test', function(t) {
     t.equal(MiniMat.FilledMat(2, 2, 4).norm(1./0) , 4, "Test inf norm");
 
     // test diag
-    t.equal(MiniMat.Eye(4).diag().toString(True) , MiniMat.Ones(1,4).toString(True), "Test diag");
+    t.equal(MiniMat.Eye(4).diag().toString(true) , MiniMat.Ones(1,4).toString(true), "Test diag");
+
+    // test trace
+    t.equal(MiniMat.Eye(4).trace() , 4, "Test trace");
 });
 
 //TODO add some expected failures
