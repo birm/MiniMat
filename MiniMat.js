@@ -188,7 +188,7 @@ class MiniMat {
             // frobenius norm
             // root of sum of absolute squared
             var abs_sq = function (val) {
-                return Math.abs(val**2);
+                return Math.abs(Math.pow(val,2));
             }
             return parseFloat(Math.sqrt(this.data.map(abs_sq).reduce(radd,0)));
         } else {
@@ -196,7 +196,7 @@ class MiniMat {
             l = parseInt(l);
             // lth root of sum of lth power
             var lpow = function (val) {
-                return val**l;
+                return (Math.pow(val,l));
             }
             return parseFloat(Math.pow(this.data.map(lpow).reduce(radd,0),1./l));
         }
