@@ -1,3 +1,10 @@
+/**
+ *  @fileoverview Matrix algebra library for javascript.
+ *  @author birm@rbirm.us (Ryan Birmingham)
+ *  @license Copyright 2017 Ryan Birmingham.
+ *  Licensed under GPL-3.
+ */
+
 // need a sum reduce function many places
 function radd(x,y){
     return x+y;
