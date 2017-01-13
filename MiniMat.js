@@ -148,6 +148,29 @@ class MiniMat {
       return this;
     }
 
+    // applies a function to each element, replacing the value with the function's return value
+    apply(fcn){
+        // input should be a function with one input and one output
+        if (!(fcn instanceof Function)){
+            // return an error since it's not a function
+            throw new Error("[Input Error] A function is required to apply to each element.");
+        }
+        var tdat=0;
+        for (var x=0; x < this.data.length; x++){
+          tdat = fcn(parseFloat(this.data[x]));
+          this.data[x]=tdat;
+        }
+        return this;
+    }
+
+    // returns the elementwise inverse
+    elem_inv(){
+        inv_fcn = function(a) {
+            return parseFloat(1./a);
+        }
+        return this.apply(inv_fcn);
+    }
+
     // emult means elementwise multiplication, so alias it
     emult(mat){
       return this.schur(mat);
@@ -239,10 +262,14 @@ test( 'default inits test', function(t) {
     t.equal( MiniMat.FilledMat(3, 2, 4).col(0,1).toString(true), new MiniMat([4,4,4,4,4,4],3,2).toString(true), "Get two rows of two fours");
 
     // test in place add
-    t.equal( MiniMat.FilledMat(3, 2, 4).add(MiniMat.FilledMat(3, 2, 4)).toString(true), MiniMat.FilledMat(3, 2, 8).toString(true), "Test matrix sums")
+    t.equal( MiniMat.FilledMat(3, 2, 4).add(MiniMat.FilledMat(3, 2, 4)).toString(true), MiniMat.FilledMat(3, 2, 8).toString(true), "Test matrix sums");
 
     // test in place schur
-    t.equal( MiniMat.FilledMat(3, 2, 4).schur(MiniMat.FilledMat(3, 2, 4)).toString(true), MiniMat.FilledMat(3, 2, 16).toString(true), "Test matrix schur product")
+    t.equal( MiniMat.FilledMat(3, 2, 4).schur(MiniMat.FilledMat(3, 2, 4)).toString(true), MiniMat.FilledMat(3, 2, 16).toString(true), "Test matrix schur product");
+
+    // test apply via inverse
+    t.equal( MiniMat.FilledMat(2, 2, 4).elem_inv().toString(true), MiniMat.FilledMat(2, 2, 0.25).toString(true), "Test apply and inverse");
+
 });
 
 //TODO add some expected failures
