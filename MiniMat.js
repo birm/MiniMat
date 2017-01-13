@@ -184,7 +184,7 @@ class MiniMat {
             // infinity norm
             // get the max value for inf vec norm for this vec
             return parseFloat(Math.max.apply(null, this.data));
-        } else if (l="fro") {
+        } else if (l=="fro") {
             // frobenius norm
             // root of sum of absolute squared
             var abs_sq = function (val) {
