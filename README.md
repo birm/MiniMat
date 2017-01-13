@@ -1,5 +1,5 @@
 # MiniMat
-[![npm version](https://badge.fury.io/js/minimat.svg)](https://www.npmjs.com/package/minimat)  [![Travis Build Status](https://travis-ci.org/birm/MiniMat.js.svg?branch=master)](https://travis-ci.org/birm/MiniMat.js)
+[![npm version](https://badge.fury.io/js/minimat.svg)](https://www.npmjs.com/package/minimat)  [![Travis Build Status](https://travis-ci.org/birm/MiniMat.svg?branch=master)](https://travis-ci.org/birm/MiniMat)
 
 Javascript library for matrix holding, representation, and processing
 
