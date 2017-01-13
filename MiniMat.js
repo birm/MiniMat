@@ -108,6 +108,25 @@ class MiniMat {
         console.warn("[Not Implemented Error] Setting columns in place is not yet supported. Make a new matrix with the changes.");
     }
 
+    // get diag
+    diag(){
+        var x_len = parseInt(this.x_len);
+        var y_len = parseInt(this.y_len);
+        var outlen = parseInt(Math.min(x_len,y_len));
+        var outvec = [];
+        for (var x = 0; x < outlen; x++) {
+            outvec[x] = parseFloat(this.data[(x_len*x)+x]);
+        }
+        return new MiniMat(outvec, 1, outlen);
+    }
+
+    // get trace
+    trace(){
+        function radd(x,y){
+            return x+y;
+        }
+        return parseFloat((this.data.reduce(radd,0)));
+    }
     // elementwise operations
 
     // check that the sizes are the same for these
@@ -235,7 +254,7 @@ class MiniMat {
         var data = new Array(parseInt(Math.pow(len,2)));
         data.fill(0);
         for (var x = 0; x < len; x ++) {
-            var pos = x*len - x;
+            var pos = x*len + x;
             data[pos] = 1
         }
         return new this(data, len, len)
@@ -250,7 +269,7 @@ var test = require('tape')
 
 // manually make a 2x2 with [1,2,3,4]
 test( 'default inits test', function(t) {
-    t.plan(16);
+    t.plan(18);
 
 
     t.doesNotThrow( function() {
@@ -308,6 +327,12 @@ test( 'default inits test', function(t) {
     t.equal(MiniMat.FilledMat(2, 2, 4).norm("fro") , 8, "Test fro norm");
     // inf norm
     t.equal(MiniMat.FilledMat(2, 2, 4).norm(1./0) , 4, "Test inf norm");
+
+    // test diag
+    t.equal(MiniMat.Eye(4).diag().toString(true) , MiniMat.Ones(1,4).toString(true), "Test diag");
+
+    // test trace
+    t.equal(MiniMat.Eye(4).trace() , 4, "Test trace");
 });
 
 //TODO add some expected failures
