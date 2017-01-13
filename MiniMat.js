@@ -200,7 +200,6 @@ class MiniMat {
             }
             return parseFloat(Math.pow(this.data.map(lpow).reduce(radd,0),1./l));
         }
-
     }
 
     // emult means elementwise multiplication, so alias it
