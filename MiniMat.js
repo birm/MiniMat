@@ -27,8 +27,9 @@ class MiniMat {
             console.warn("[TypeWarning] Your x_len and y_len arguments to MiniMat should be Numbers. Since they are not, they will be cast as Numbers via parseInt().");
         } else if (typeof(data) != 'Array' && !data.every(isNumberType)) {
             // the data is the wrong type; error
-            throw new Error("[Data Error] Data is either not an array, or has non-numeric elements.");
+            throw new Error("[Data Error] Data is not an array.");
         }
+        data.map(parseFloat);
         x_len = parseInt(x_len);
         y_len = parseInt(y_len);
         // error if wrong amount of data
