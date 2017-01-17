@@ -194,13 +194,13 @@ class MiniMat {
     // in place elementwise addition
     add(mat){
       function ipadd(a,b) {return a+b;}
-      return elementwise(mat, ipadd);
+      return this.elementwise(mat, ipadd);
     }
 
     // in place schur product
     schur(mat){
       function ipmult(a,b) {return a*b;}
-      return elementwise(mat, ipadd);
+      return this.elementwise(mat, ipadd);
     }
 
     // applies a function to each element, replacing the value with the function's return value
