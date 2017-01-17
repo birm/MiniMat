@@ -78,7 +78,7 @@ test( 'default inits test', function(t) {
     t.equal(MiniMat.Eye(4).trace() , 4, "Test trace");
 
     // test norms
-    t.equal(MiniMat.FilledMat(2, 2, 4).normalize(false).toString(true), MiniMat.FilledMat(2, 2, 4).normalize(true).toString(true), "Test normalization");
+    t.equal(MiniMat.FilledMat(2, 2, 4).normalize(false).toString(true), new MiniMat([0.5,0.5,1/9, 8/9],2,2).toString(true), "Test normalization");
 });
 
 //TODO add some expected failures
