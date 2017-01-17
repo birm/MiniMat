@@ -25,13 +25,13 @@ class MiniMat {
         if ((typeof(x_len) !== 'number') && (typeof(y_len) !== 'number')) {
             // types don't allign, and we'll try to cast; warn
             console.warn("[TypeWarning] Your x_len and y_len arguments to MiniMat should be Numbers. Since they are not, they will be cast as Numbers via parseInt().");
-        } else if (data.constructor === Array && !data.every(isNumberType)) {
+        } else if (!(data.constructor === Array) && !data.every(isNumberType)) {
             // the data is the wrong type; error
             throw new Error("[Data Error] Data is not an array.");
         }
         data.map(parseFloat);
-        x_len = parseInt(x_len, 10);
-        y_len = parseInt(y_len, 10);
+        //x_len = parseInt(x_len, 10);
+        //y_len = parseInt(y_len, 10);
         // error if wrong amount of data
         if (!(x_len * y_len == data.length)){
             throw new Error("[Data Error] Data length should be " + parseInt(x_len * y_len, 10) + " and instead is " + data.length + ".");
