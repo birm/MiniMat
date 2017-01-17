@@ -33,7 +33,7 @@ class MiniMat {
         x_len = parseInt(x_len, 10);
         y_len = parseInt(y_len, 10);
         // error if wrong amount of data
-        if (!(x_len * y_len == parseInt(data.length, 10)){
+        if (!(x_len * y_len == parseInt(data.length, 10))){
             throw new Error("[Data Error] Data length should be " + parseInt(x_len * y_len, 10) + " and instead is " + parseInt(data.length, 10) + ".");
         }
         this.x_len = x_len; // number rows
