@@ -30,11 +30,11 @@ class MiniMat {
             throw new Error("[Data Error] Data is not an array.");
         }
         data.map(parseFloat);
-        //x_len = parseInt(x_len, 10);
-        //y_len = parseInt(y_len, 10);
+        x_len = parseInt(x_len, 10);
+        y_len = parseInt(y_len, 10);
         // error if wrong amount of data
-        if (!(x_len * y_len == data.length)){
-            throw new Error("[Data Error] Data length should be " + parseInt(x_len * y_len, 10) + " and instead is " + data.length + ".");
+        if (!(x_len * y_len == parseInt(data.length, 10)){
+            throw new Error("[Data Error] Data length should be " + parseInt(x_len * y_len, 10) + " and instead is " + parseInt(data.length, 10) + ".");
         }
         this.x_len = x_len; // number rows
         this.y_len = y_len; // number cols
