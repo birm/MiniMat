@@ -224,23 +224,21 @@ class MiniMat {
         var x_len = parseFloat(this.x_len);
         var y_len = parseFloat(this.y_len);
         if (rowvecs){
-            for (var x=0; x < y_len; x++){
-                var vec = this.row(x).data;
-                var vecsum = vec.reduce(radd,0);
-                var div_vecsum = function(val){
-                    return val/vecsum;
-                }
-                this.row_set(x, vec.map(div_vecsum));
-            }
+          var itlen = y_len;
         } else {
-            for (var x=0; x < y_len; x++){
-                var vec = this.col(x).data;
-                var vecsum = vec.reduce(radd,0);
-                var div_vecsum = function(val){
-                    return val/vecsum;
-                }
-                this.col_set(x, vec.map(div_vecsum));
-            }
+          var itlen = x_len;
+        }
+        for (var x=0; x < itlen; x++){
+          if (rowvecs){
+            var vec = this.row(x).data;
+          } else {
+            var vec = this.col(x).data;
+          }
+          var vecsum = vec.reduce(radd,0);
+          var div_vecsum = function(val){
+              return val/vecsum;
+          }
+          this.row_set(x, vec.map(div_vecsum));
         }
         return this;
     }
