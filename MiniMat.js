@@ -228,6 +228,9 @@ class MiniMat {
         } else {
           var itlen = y_len;
         }
+        var div_vecsum = function(val){
+            return val/vecsum;
+        }
         for (var x=0; x < itlen; x++){
           if (rowvecs){
             var vec = this.row(x).data;
@@ -235,9 +238,6 @@ class MiniMat {
             var vec = this.col(x).data;
           }
           var vecsum = vec.reduce(radd,0);
-          var div_vecsum = function(val){
-              return val/vecsum;
-          }
           this.row_set(x, vec.map(div_vecsum));
         }
         return this;
