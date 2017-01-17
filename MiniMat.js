@@ -67,8 +67,8 @@ class MiniMat {
         // sanitize all we use
         var x_len = parseInt(this.x_len, 10);
         var y_len = parseInt(this.y_len, 10);
-        var index = parseInt(index, 10);
-        var to_index = parseInt(to_index, 10);
+        index = parseInt(index, 10);
+        to_index = parseInt(to_index, 10);
 
         // assure all in range are accessible
         if (to_index >= x_len || index >= x_len){
@@ -87,8 +87,8 @@ class MiniMat {
         // sanitize all we use
         var x_len = parseInt(this.x_len, 10);
         var y_len = parseInt(this.y_len, 10);
-        var index = parseInt(index, 10);
-        var to_index = parseInt(to_index, 10);
+        index = parseInt(index, 10);
+        to_index = parseInt(to_index, 10);
         var first_data_pos = Math.min(index, to_index) * y_len;
         var last_data_pos = ((Math.max(index, to_index)+1) * (y_len));
         for (var x = 0; x < last_data_pos-first_data_pos; x++){
@@ -110,8 +110,8 @@ class MiniMat {
         // sanitize all we use
         var x_len = parseInt(this.x_len, 10);
         var y_len = parseInt(this.y_len, 10);
-        var index = Math.min(parseInt(index, 10), parseInt(to_index, 10));
-        var to_index = Math.max(parseInt(index, 10), parseInt(to_index, 10));
+        index = Math.min(parseInt(index, 10), parseInt(to_index, 10));
+        to_index = Math.max(parseInt(index, 10), parseInt(to_index, 10));
 
         // assure all in range are accessible
         if (to_index >= y_len || index < 0){
@@ -137,8 +137,8 @@ class MiniMat {
         // sanitize all we use
         var x_len = parseInt(this.x_len, 10);
         var y_len = parseInt(this.y_len, 10);
-        var index = parseInt(index, 10);
-        var to_index = parseInt(to_index, 10);
+        index = parseInt(index, 10);
+        to_index = parseInt(to_index, 10);
         // for each col to change
         for (var x=0; x <= to_index-index; x++){
             for (var y = 0; y < y_len; y++){
@@ -223,19 +223,21 @@ class MiniMat {
         // run with false for column vectors, true for row vectors
         var x_len = parseFloat(this.x_len);
         var y_len = parseFloat(this.y_len);
+        var itlen;
         if (rowvecs){
-          var itlen = x_len;
+          itlen = x_len;
         } else {
-          var itlen = y_len;
+          itlen = y_len;
         }
         var div_vecsum = function(val){
             return val/vecsum;
         }
         for (var x=0; x < itlen; x++){
+          var vec;
           if (rowvecs){
-            var vec = this.row(x).data;
+            vec = this.row(x).data;
           } else {
-            var vec = this.col(x).data;
+            vec = this.col(x).data;
           }
           var vecsum = vec.reduce(radd,0);
           this.row_set(x, vec.map(div_vecsum));
@@ -255,11 +257,11 @@ class MiniMat {
         var x_len = parseInt(this.x_len, 10);
 
         // some special norms
-        if (l==1./0 || l=="inf"){
+        if (l === 1./0 || l === "inf"){
             // infinity norm
             // get the max value for inf vec norm for this vec
             return parseFloat(Math.max.apply(null, this.data));
-        } else if (l=="fro") {
+        } else if (l === "fro") {
             // frobenius norm
             // root of sum of absolute squared
             var abs_sq = function (val) {
