@@ -20,21 +20,21 @@ class MiniMat {
         // validate the input
         // define an inline function to pass to Array.proto.every
         function isNumberType(element, index, array) {
-            return typeof(element) == "number";
+            return typeof(element) === "number";
         }
-        if ((typeof(x_len) != 'number') && (typeof(y_len) != 'number')) {
+        if ((typeof(x_len) !== 'number') && (typeof(y_len) !== 'number')) {
             // types don't allign, and we'll try to cast; warn
             console.warn("[TypeWarning] Your x_len and y_len arguments to MiniMat should be Numbers. Since they are not, they will be cast as Numbers via parseInt().");
-        } else if (typeof(data) != 'Array' && !data.every(isNumberType)) {
+        } else if (!(data.constructor === Array) && !data.every(isNumberType)) {
             // the data is the wrong type; error
             throw new Error("[Data Error] Data is not an array.");
         }
         data.map(parseFloat);
-        x_len = parseInt(x_len);
-        y_len = parseInt(y_len);
+        x_len = parseInt(x_len, 10);
+        y_len = parseInt(y_len, 10);
         // error if wrong amount of data
-        if (!(x_len * y_len == data.length)){
-            throw new Error("[Data Error] Data length should be " + parseInt(x_len * y_len) + " and instead is " + parseInt(data.length) + ".");
+        if (!(x_len * y_len === parseInt(data.length, 10))){
+            throw new Error("[Data Error] Data length should be " + parseInt(x_len * y_len, 10) + " and instead is " + parseInt(data.length, 10) + ".");
         }
         this.x_len = x_len; // number rows
         this.y_len = y_len; // number cols
@@ -44,7 +44,7 @@ class MiniMat {
 
     // give a string value for either human or machine inspection
     toString(machine=false) {
-        if (machine == false) {
+        if (machine === false) {
             var outstr = this.x_len + " by " + this.y_len + " MiniMat: \n";
             for (var x = 0; x < this.x_len; x++){
                 outstr = outstr + "[" + this.data.slice(x * this.y_len, (x+1) * this.y_len).toString() + "]\n";
@@ -61,14 +61,14 @@ class MiniMat {
         // to_index (optional) should be the last row index
 
         // if to_index is unset or -1, only the index row is returned
-        if (to_index == -1) {
+        if (to_index === -1) {
             to_index=index;
         }
         // sanitize all we use
-        var x_len = parseInt(this.x_len);
-        var y_len = parseInt(this.y_len);
-        var index = parseInt(index);
-        var to_index = parseInt(to_index);
+        var x_len = parseInt(this.x_len, 10);
+        var y_len = parseInt(this.y_len, 10);
+        var index = parseInt(index, 10);
+        var to_index = parseInt(to_index, 10);
 
         // assure all in range are accessible
         if (to_index >= x_len || index >= x_len){
@@ -81,14 +81,14 @@ class MiniMat {
 
     // does nothing but warn now, but set row.
     row_set(index, data=[], to_index=-1) {
-        if (to_index == -1) {
+        if (to_index === -1) {
             to_index=index;
         }
         // sanitize all we use
-        var x_len = parseInt(this.x_len);
-        var y_len = parseInt(this.y_len);
-        var index = parseInt(index);
-        var to_index = parseInt(to_index);
+        var x_len = parseInt(this.x_len, 10);
+        var y_len = parseInt(this.y_len, 10);
+        var index = parseInt(index, 10);
+        var to_index = parseInt(to_index, 10);
         var first_data_pos = Math.min(index, to_index) * y_len;
         var last_data_pos = ((Math.max(index, to_index)+1) * (y_len));
         for (var x = 0; x < last_data_pos-first_data_pos; x++){
@@ -103,15 +103,15 @@ class MiniMat {
         // to_index (optional) should be the last row index
 
         // if to_index is unset or -1, only the index row is returned
-        if (to_index == -1) {
+        if (to_index === -1) {
             to_index=index;
         }
 
         // sanitize all we use
-        var x_len = parseInt(this.x_len);
-        var y_len = parseInt(this.y_len);
-        var index = Math.min(parseInt(index), parseInt(to_index));
-        var to_index = Math.max(parseInt(index), parseInt(to_index));
+        var x_len = parseInt(this.x_len, 10);
+        var y_len = parseInt(this.y_len, 10);
+        var index = Math.min(parseInt(index, 10), parseInt(to_index, 10));
+        var to_index = Math.max(parseInt(index, 10), parseInt(to_index, 10));
 
         // assure all in range are accessible
         if (to_index >= y_len || index < 0){
@@ -131,21 +131,21 @@ class MiniMat {
 
     // does nothing but warn now, but set row.
     col_set(index, data=[], to_index=-1) {
-        if (to_index == -1) {
+        if (to_index === -1) {
             to_index=index;
         }
         // sanitize all we use
-        var x_len = parseInt(this.x_len);
-        var y_len = parseInt(this.y_len);
-        var index = parseInt(index);
-        var to_index = parseInt(to_index);
+        var x_len = parseInt(this.x_len, 10);
+        var y_len = parseInt(this.y_len, 10);
+        var index = parseInt(index, 10);
+        var to_index = parseInt(to_index, 10);
         // for each col to change
         for (var x=0; x <= to_index-index; x++){
             for (var y = 0; y < y_len; y++){
                 // position in new data to get
-                var new_pos = parseInt(x*y_len+y)
+                var new_pos = parseInt(x*y_len+y, 10)
                 // position in old data to replace
-                var old_pos = parseInt(index+x+(y_len*y));
+                var old_pos = parseInt(index+x+(y_len*y), 10);
                 this.data[old_pos]=data[new_pos]
             }
         }
@@ -154,9 +154,9 @@ class MiniMat {
 
     // get diag
     diag(){
-        var x_len = parseInt(this.x_len);
-        var y_len = parseInt(this.y_len);
-        var outlen = parseInt(Math.min(x_len,y_len));
+        var x_len = parseInt(this.x_len, 10);
+        var y_len = parseInt(this.y_len, 10);
+        var outlen = parseInt(Math.min(x_len,y_len), 10);
         var outvec = [];
         for (var x = 0; x < outlen; x++) {
             outvec[x] = parseFloat(this.data[(x_len*x)+x]);
@@ -172,10 +172,11 @@ class MiniMat {
 
     // check that the sizes are the same for these
     same_dims(mat){
-      return ((this.x_len == mat.x_len) && (this.y_len == mat.y_len));
+      return ((this.x_len === mat.x_len) && (this.y_len === mat.y_len));
     }
-    // in place elementwise addition
-    add(mat){
+
+    // elementwise operation on the matrix
+    elementwise(mat, operation){
       // take in a matrix of the same dimensions
       // this is an in place operation, so the object is changed.
 
@@ -185,27 +186,21 @@ class MiniMat {
       }
       var tdat=0;
       for (var x=0; x < this.data.length; x++){
-        tdat = parseFloat(this.data[x]) + parseFloat(mat.data[x]);
+        tdat = operation(parseFloat(this.data[x]), parseFloat(mat.data[x]));
         this.data[x]=tdat;
       }
       return this;
     }
+    // in place elementwise addition
+    add(mat){
+      var ipadd =function(a,b) {return a+b;}
+      return this.elementwise(mat, ipadd);
+    }
 
     // in place schur product
     schur(mat){
-      // take in a matrix of the same dimensions
-      // this is an in place operation, so the object is changed.
-
-      // make sure they're the same dimensions
-      if (!(this.same_dims(mat))){
-        throw new Error("[Data Error] Matrices must be the same dimensionality for schur product.");
-      }
-      var tdat=0;
-      for (var x=0; x < this.data.length; x++){
-        tdat = parseFloat(this.data[x]) * parseFloat(mat.data[x]);
-        this.data[x]=tdat;
-      }
-      return this;
+      var ipmult = function(a,b) {return a*b;}
+      return this.elementwise(mat, ipmult);
     }
 
     // applies a function to each element, replacing the value with the function's return value
@@ -229,23 +224,21 @@ class MiniMat {
         var x_len = parseFloat(this.x_len);
         var y_len = parseFloat(this.y_len);
         if (rowvecs){
-            for (var x=0; x < y_len; x++){
-                var vec = this.row(x).data;
-                var vecsum = vec.reduce(radd,0);
-                var div_vecsum = function(val){
-                    return val/vecsum;
-                }
-                this.row_set(x, vec.map(div_vecsum));
-            }
+          var itlen = x_len;
         } else {
-            for (var x=0; x < y_len; x++){
-                var vec = this.col(x).data;
-                var vecsum = vec.reduce(radd,0);
-                var div_vecsum = function(val){
-                    return val/vecsum;
-                }
-                this.col_set(x, vec.map(div_vecsum));
-            }
+          var itlen = y_len;
+        }
+        var div_vecsum = function(val){
+            return val/vecsum;
+        }
+        for (var x=0; x < itlen; x++){
+          if (rowvecs){
+            var vec = this.row(x).data;
+          } else {
+            var vec = this.col(x).data;
+          }
+          var vecsum = vec.reduce(radd,0);
+          this.row_set(x, vec.map(div_vecsum));
         }
         return this;
     }
@@ -259,7 +252,7 @@ class MiniMat {
     // get the matrix norm of a level passed in, default 2
     norm(l=2){
         // sanitize numerical from this
-        var x_len = parseInt(this.x_len);
+        var x_len = parseInt(this.x_len, 10);
 
         // some special norms
         if (l==1./0 || l=="inf"){
@@ -275,7 +268,7 @@ class MiniMat {
             return parseFloat(Math.sqrt(this.data.map(abs_sq).reduce(radd,0)));
         } else {
             // l-? norm
-            l = parseInt(l);
+            l = parseInt(l, 10);
             // lth root of sum of lth power
             var lpow = function (val) {
                 return (Math.pow(val,l));
@@ -295,9 +288,9 @@ class MiniMat {
 
     // make a matrix filled with one value
     static FilledMat(x_len, y_len, value=1) {
-        x_len = parseInt(x_len);
-        y_len = parseInt(y_len);
-        var data = new Array(parseInt(x_len*y_len));
+        x_len = parseInt(x_len, 10);
+        y_len = parseInt(y_len, 10);
+        var data = new Array(parseInt(x_len*y_len, 10));
         data.fill(value);
         return new this(data, x_len, y_len)
     }
@@ -313,8 +306,8 @@ class MiniMat {
     }
 
     static Eye(len){
-        len = parseInt(len);
-        var data = new Array(parseInt(Math.pow(len,2)));
+        len = parseInt(len, 10);
+        var data = new Array(parseInt(Math.pow(len,2), 10));
         data.fill(0);
         for (var x = 0; x < len; x ++) {
             var pos = x*len + x;
