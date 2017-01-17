@@ -33,7 +33,7 @@ class MiniMat {
         x_len = parseInt(x_len, 10);
         y_len = parseInt(y_len, 10);
         // error if wrong amount of data
-        if (!(x_len * y_len == parseInt(data.length, 10))){
+        if (!(x_len * y_len === parseInt(data.length, 10))){
             throw new Error("[Data Error] Data length should be " + parseInt(x_len * y_len, 10) + " and instead is " + parseInt(data.length, 10) + ".");
         }
         this.x_len = x_len; // number rows
@@ -44,7 +44,7 @@ class MiniMat {
 
     // give a string value for either human or machine inspection
     toString(machine=false) {
-        if (machine == false) {
+        if (machine === false) {
             var outstr = this.x_len + " by " + this.y_len + " MiniMat: \n";
             for (var x = 0; x < this.x_len; x++){
                 outstr = outstr + "[" + this.data.slice(x * this.y_len, (x+1) * this.y_len).toString() + "]\n";
@@ -61,7 +61,7 @@ class MiniMat {
         // to_index (optional) should be the last row index
 
         // if to_index is unset or -1, only the index row is returned
-        if (to_index == -1) {
+        if (to_index === -1) {
             to_index=index;
         }
         // sanitize all we use
@@ -81,7 +81,7 @@ class MiniMat {
 
     // does nothing but warn now, but set row.
     row_set(index, data=[], to_index=-1) {
-        if (to_index == -1) {
+        if (to_index === -1) {
             to_index=index;
         }
         // sanitize all we use
@@ -103,7 +103,7 @@ class MiniMat {
         // to_index (optional) should be the last row index
 
         // if to_index is unset or -1, only the index row is returned
-        if (to_index == -1) {
+        if (to_index === -1) {
             to_index=index;
         }
 
@@ -131,7 +131,7 @@ class MiniMat {
 
     // does nothing but warn now, but set row.
     col_set(index, data=[], to_index=-1) {
-        if (to_index == -1) {
+        if (to_index === -1) {
             to_index=index;
         }
         // sanitize all we use
@@ -172,7 +172,7 @@ class MiniMat {
 
     // check that the sizes are the same for these
     same_dims(mat){
-      return ((this.x_len == mat.x_len) && (this.y_len == mat.y_len));
+      return ((this.x_len === mat.x_len) && (this.y_len === mat.y_len));
     }
 
     // elementwise operation on the matrix
