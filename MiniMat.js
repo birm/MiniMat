@@ -290,7 +290,7 @@ class MiniMat {
     static FilledMat(x_len, y_len, value=1) {
         x_len = parseInt(x_len, 10);
         y_len = parseInt(y_len, 10);
-        var data = new Array(parseInt(x_len*y_len), 10);
+        var data = new Array(parseInt(x_len*y_len, 10));
         data.fill(value);
         return new this(data, x_len, y_len)
     }
