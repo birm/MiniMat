@@ -174,8 +174,9 @@ class MiniMat {
     same_dims(mat){
       return ((this.x_len == mat.x_len) && (this.y_len == mat.y_len));
     }
-    // in place elementwise addition
-    add(mat){
+
+    // elementwise operation on the matrix
+    elementwise(mat, operation){
       // take in a matrix of the same dimensions
       // this is an in place operation, so the object is changed.
 
@@ -185,27 +186,21 @@ class MiniMat {
       }
       var tdat=0;
       for (var x=0; x < this.data.length; x++){
-        tdat = parseFloat(this.data[x]) + parseFloat(mat.data[x]);
+        tdat = operation(parseFloat(this.data[x]), parseFloat(mat.data[x]));
         this.data[x]=tdat;
       }
       return this;
     }
+    // in place elementwise addition
+    add(mat){
+      function ipadd(a,b) {return a+b;}
+      return elementwise(mat, ipadd);
+    }
 
     // in place schur product
     schur(mat){
-      // take in a matrix of the same dimensions
-      // this is an in place operation, so the object is changed.
-
-      // make sure they're the same dimensions
-      if (!(this.same_dims(mat))){
-        throw new Error("[Data Error] Matrices must be the same dimensionality for schur product.");
-      }
-      var tdat=0;
-      for (var x=0; x < this.data.length; x++){
-        tdat = parseFloat(this.data[x]) * parseFloat(mat.data[x]);
-        this.data[x]=tdat;
-      }
-      return this;
+      function ipmult(a,b) {return a*b;}
+      return elementwise(mat, ipadd);
     }
 
     // applies a function to each element, replacing the value with the function's return value

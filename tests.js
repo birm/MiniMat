@@ -1,5 +1,5 @@
 /**
- *  @fileoverview MiniMat (Matrix algebra library) tests.
+ *  @fileoverview MiniMat (Matrix algebra library) library tests.
  *  @author birm@rbirm.us (Ryan Birmingham)
  *  @license Copyright 2017 Ryan Birmingham.
  *  Licensed under GPL-3.
