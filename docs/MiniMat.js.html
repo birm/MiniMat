@@ -1,4 +1,32 @@
-/**
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: MiniMat.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: MiniMat.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
  *  @fileoverview Matrix algebra library for javascript.
  *  @author birm@rbirm.us (Ryan Birmingham)
  *  @license Copyright 2017 Ryan Birmingham.
@@ -23,10 +51,10 @@ class MiniMat {
         function isNumberType(element, index, array) {
             return typeof(element) === "number";
         }
-        if ((typeof(x_len) !== 'number') && (typeof(y_len) !== 'number')) {
+        if ((typeof(x_len) !== 'number') &amp;&amp; (typeof(y_len) !== 'number')) {
             // types don't allign, and we'll try to cast; warn
             console.warn("[TypeWarning] Your x_len and y_len arguments to MiniMat should be Numbers. Since they are not, they will be cast as Numbers via parseInt().");
-        } else if (!(data.constructor === Array) && !data.every(isNumberType)) {
+        } else if (!(data.constructor === Array) &amp;&amp; !data.every(isNumberType)) {
             // the data is the wrong type; error
             throw new Error("[Data Error] Data is not an array.");
         }
@@ -49,7 +77,7 @@ class MiniMat {
     toString(machine=false) {
         if (machine === false) {
             var outstr = this.x_len + " by " + this.y_len + " MiniMat: \n";
-            for (var x = 0; x < this.x_len; x++){
+            for (var x = 0; x &lt; this.x_len; x++){
                 outstr = outstr + "[" + this.data.slice(x * this.y_len, (x+1) * this.y_len).toString() + "]\n";
             }
             return outstr;
@@ -98,7 +126,7 @@ class MiniMat {
         to_index = parseInt(to_index, 10);
         var first_data_pos = Math.min(index, to_index) * y_len;
         var last_data_pos = ((Math.max(index, to_index)+1) * (y_len));
-        for (var x = 0; x < last_data_pos-first_data_pos; x++){
+        for (var x = 0; x &lt; last_data_pos-first_data_pos; x++){
             this.data[x+first_data_pos]=data[x];
         }
         return this
@@ -124,14 +152,14 @@ class MiniMat {
         to_index = Math.max(parseInt(index, 10), parseInt(to_index, 10));
 
         // assure all in range are accessible
-        if (to_index >= y_len || index < 0){
+        if (to_index >= y_len || index &lt; 0){
             throw new Error("[Row Index Error] Columns between " + index + " and " + to_index + " are not all within the " + y_len + " columns in the matrix.");
         }
 
         // now we need to actually get the fields in data
         var out_data = [];
         // for each col to evaluate
-        for (var x=0; x < x_len; x++){
+        for (var x=0; x &lt; x_len; x++){
             // for each data position
             out_data = out_data.concat(this.data.slice((y_len * x) + index, (y_len * x) + to_index + 1));
         }
@@ -154,8 +182,8 @@ class MiniMat {
         index = parseInt(index, 10);
         to_index = parseInt(to_index, 10);
         // for each col to change
-        for (var x=0; x <= to_index-index; x++){
-            for (var y = 0; y < y_len; y++){
+        for (var x=0; x &lt;= to_index-index; x++){
+            for (var y = 0; y &lt; y_len; y++){
                 // position in new data to get
                 var new_pos = parseInt(x*y_len+y, 10)
                 // position in old data to replace
@@ -172,7 +200,7 @@ class MiniMat {
         var y_len = parseInt(this.y_len, 10);
         var outlen = parseInt(Math.min(x_len,y_len), 10);
         var outvec = [];
-        for (var x = 0; x < outlen; x++) {
+        for (var x = 0; x &lt; outlen; x++) {
             outvec[x] = parseFloat(this.data[(x_len*x)+x]);
         }
         return new MiniMat(outvec, 1, outlen);
@@ -185,7 +213,7 @@ class MiniMat {
 
     /** Check that the sizes are the same for these */
     same_dims(mat){
-      return ((this.x_len === mat.x_len) && (this.y_len === mat.y_len));
+      return ((this.x_len === mat.x_len) &amp;&amp; (this.y_len === mat.y_len));
     }
 
     /** Perform an in-place elementwise operation on the matrix. This is an in place operation, so the object reference is changed, but the one passed is not.
@@ -198,7 +226,7 @@ class MiniMat {
         throw new Error("[Data Error] Matrices must be the same dimensionality to add elementwise.");
       }
       var tdat=0;
-      for (var x=0; x < this.data.length; x++){
+      for (var x=0; x &lt; this.data.length; x++){
         tdat = operation(parseFloat(this.data[x]), parseFloat(mat.data[x]));
         this.data[x]=tdat;
       }
@@ -226,7 +254,7 @@ class MiniMat {
             throw new Error("[Input Error] A function is required to apply to each element.");
         }
         var tdat=0;
-        for (var x=0; x < this.data.length; x++){
+        for (var x=0; x &lt; this.data.length; x++){
           tdat = fcn(parseFloat(this.data[x]));
           this.data[x]=tdat;
         }
@@ -249,7 +277,7 @@ class MiniMat {
         var div_vecsum = function(val){
             return val/vecsum;
         }
-        for (var x=0; x < itlen; x++){
+        for (var x=0; x &lt; itlen; x++){
           var vec;
           if (rowvecs){
             vec = this.row(x).data;
@@ -349,7 +377,7 @@ class MiniMat {
         len = parseInt(len, 10);
         var data = new Array(parseInt(Math.pow(len,2), 10));
         data.fill(0);
-        for (var x = 0; x < len; x ++) {
+        for (var x = 0; x &lt; len; x ++) {
             var pos = x*len + x;
             data[pos] = 1
         }
@@ -358,3 +386,26 @@ class MiniMat {
 }
 
 module.exports = MiniMat;
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="MiniMat.html">MiniMat</a></li><li><a href="MiniMat.Eye.html">Eye</a></li><li><a href="MiniMat.FilledMat.html">FilledMat</a></li><li><a href="MiniMat.Ones.html">Ones</a></li><li><a href="MiniMat.Zeroes.html">Zeroes</a></li></ul><h3>Global</h3><ul><li><a href="global.html#radd">radd</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a> on Mon Jan 23 2017 11:21:16 GMT-0500 (Eastern Standard Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
