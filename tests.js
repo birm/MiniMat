@@ -37,7 +37,7 @@ test( 'initialization tests', function(t) {
 });
 
 test( 'representation tests', function(t) {
-    t.plan(5);
+    t.plan(6);
 
     // take a ones mat and try getting a row
     t.equal( MiniMat.Ones(3,4).row(0).toString(true), new MiniMat([1,1,1,1],1,4).toString(true), "Get a row of four ones");
