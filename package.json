@@ -12,7 +12,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/birm/MiniMat.js.git"
+    "url": "git+https://github.com/birm/MiniMat.git"
   },
   "keywords": [
     "matrix",
@@ -22,7 +22,7 @@
   "author": "Ryan Birmingham",
   "license": "GPL-3.0",
   "bugs": {
-    "url": "https://github.com/birm/MiniMat.js/issues"
+    "url": "https://github.com/birm/MiniMat/issues"
   },
-  "homepage": "https://github.com/birm/MiniMat.js#readme"
+  "homepage": "https://github.com/birm/MiniMat#readme"
 }
