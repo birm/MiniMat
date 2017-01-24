@@ -57,6 +57,14 @@ class MiniMat {
             return "MiniMat{(" + this.data.toString() + ")" + this.x_len + "," + this.y_len + "}";
         }
     }
+    /** Get a JSON string from a matrix
+    */
+    json(){
+      var json = {"type":"minimat","data":
+      this.data, "x_len": + parseInt(this.x_len,10)
+      ,"y_len":parseInt(this.y_len,10)};
+      return json;
+    }
 
     /** Get a row or rows by index.
     * @param {int} index - the first row index of the desired selection
@@ -396,6 +404,17 @@ class MiniMat {
           }
       });
       return datamat;
+    }
+
+    /** make a matrix from a json
+    * @constructor
+    * @param {JSON} object - the number of columns.
+    */
+    static FromJson(object){
+        if (object['type'] !== "minimat"){
+          console.warn("[Data Error] This json does not appear to be a MiniMat json.");
+        }
+        return new this(object['data'], object['x_len'], object['y_len']);
     }
 
     /** make a matrix filled with ones
