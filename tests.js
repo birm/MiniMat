@@ -8,12 +8,8 @@
 var test = require('tape');
 var MiniMat = require("./MiniMat");
 
-// just start with the simplest ones
-
-// manually make a 2x2 with [1,2,3,4]
-test( 'default inits test', function(t) {
-    t.plan(18);
-
+test( 'initialization tests', function(t) {
+    t.plan(5);
 
     t.doesNotThrow( function() {
         onetwothreefour = new MiniMat([1,2,3,4], 2, 2);
@@ -38,6 +34,10 @@ test( 'default inits test', function(t) {
     t.doesNotThrow( function() {
         onesmat = MiniMat.Ones(6,7);
     }, '*', "Ones construction");
+});
+
+test( 'representation tests', function(t) {
+    t.plan(5);
 
     // take a ones mat and try getting a row
     t.equal( MiniMat.Ones(3,4).row(0).toString(true), new MiniMat([1,1,1,1],1,4).toString(true), "Get a row of four ones");
@@ -53,6 +53,10 @@ test( 'default inits test', function(t) {
 
     // take a filled mat and try getting two rows
     t.equal( MiniMat.FilledMat(3, 2, 4).col(0,1).toString(true), new MiniMat([4,4,4,4,4,4],3,2).toString(true), "Get two rows of two fours");
+});
+
+test( 'mathematical operation tests', function(t) {
+    t.plan(8);
 
     // test in place schur
     t.equal( MiniMat.FilledMat(3, 2, 4).schur(MiniMat.FilledMat(3, 2, 4)).toString(true), MiniMat.FilledMat(3, 2, 16).toString(true), "Test matrix schur product");
@@ -78,4 +82,4 @@ test( 'default inits test', function(t) {
     t.equal(MiniMat.FilledMat(2, 2, 4).normalize(false).toString(true), new MiniMat([0.5,0.5,1/9, 8/9],2,2).toString(true), "Test normalization");
 });
 
-//eventually add some expected failures
+//need to add some expected failures
