@@ -329,29 +329,25 @@ class MiniMat {
     * @param {int} x_len - the number of columns.
     * @param {int} y_len - the number of rows
     */
-    static FromFile(content, x_len, y_len){
-      data_clean = function(data){
-        // convert to array, 1d
-        data = data.replace(/\n/g,',')
-        // replace missing (denoted ?) with infinity
-        data = data.replace(/\?/g,"Infinity")
-        data = data.split(","); // TODO add other delimiters?
-        // map to float
-        data = data.map(parseFloat);
-        // remove nan from data format issues
-        data = data.filter(function(v) { return (!!v || v==0); });
-        // turn infinity back into NaN
-        data = data.map(function(x){
-          if (x==Infinity){
-            return NaN;
-          } else {
-            return x;
-          }
-        });
-        return data;
-      }
-
-      return new this(data_clean(data), x_len, y_len)
+    static FromFile(data, x_len, y_len){
+      // convert to array, 1d
+      data = data.replace(/\n/g,',')
+      // replace missing (denoted ?) with infinity
+      data = data.replace(/\?/g,"Infinity")
+      data = data.split(","); // TODO add other delimiters?
+      // map to float
+      data = data.map(parseFloat);
+      // remove nan from data format issues
+      data = data.filter(function(v) { return (!!v || v==0); });
+      // turn infinity back into NaN
+      data = data.map(function(x){
+        if (x==Infinity){
+          return NaN;
+        } else {
+          return x;
+        }
+      });
+      return new this(data, x_len, y_len)
     }
 
     /** Generate a matrix from data passed in the browser
@@ -377,15 +373,14 @@ class MiniMat {
               reader.onload = function(e) {
                   // catch erorrs in matrix creation
                   try {
-                      var data = data_clean(reader.result);
                       // get x and y sizes
                       var x_len = document.getElementById(x_tag);
                       var y_len = document.getElementById('y_tag');
                       // make sure x and y are ints
-                      x_len = parseInt(x_len.value);
-                      y_len = parseInt(y_len.value);
+                      x_len = parseInt(x_len.value, 10);
+                      y_len = parseInt(y_len.value, 10);
                       // create matrix
-                      datamat = new MiniMat(data, x_len, y_len);
+                      datamat = MiniMat.FromFile(reader.result, x_len, y_len);
                       // display matrix out
                       fileDisplayArea.innerText = datamat.toString();
                   }
@@ -400,6 +395,7 @@ class MiniMat {
               fileDisplayArea.innerText = "File not supported!"
           }
       });
+      return datamat;
     }
 
     /** make a matrix filled with ones
