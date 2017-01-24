@@ -53,6 +53,9 @@ test( 'representation tests', function(t) {
 
     // take a filled mat and try getting two rows
     t.equal( MiniMat.FilledMat(3, 2, 4).col(0,1).toString(true), new MiniMat([4,4,4,4,4,4],3,2).toString(true), "Get two rows of two fours");
+
+    // an object sould json and from json to the same thing
+    t.equal(MiniMat.FilledMat(3, 2, 4).toString(true), MiniMat.FromJson(MiniMat.FilledMat(3, 2, 4).json()).toString(true));
 });
 
 test( 'mathematical operation tests', function(t) {
