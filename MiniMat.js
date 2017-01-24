@@ -323,6 +323,85 @@ class MiniMat {
         return new this(data, x_len, y_len)
     }
 
+    /** make a matrix from a text file content
+    * @constructor
+    * @param {string} content - The contents of a file to load, with "?" as "missing values"
+    * @param {int} x_len - the number of columns.
+    * @param {int} y_len - the number of rows
+    */
+    static FromFile(content, x_len, y_len){
+      data_clean = function(data){
+        // convert to array, 1d
+        data = data.replace(/\n/g,',')
+        // replace missing (denoted ?) with infinity
+        data = data.replace(/\?/g,"Infinity")
+        data = data.split(","); // TODO add other delimiters?
+        // map to float
+        data = data.map(parseFloat);
+        // remove nan from data format issues
+        data = data.filter(function(v) { return (!!v || v==0); });
+        // turn infinity back into NaN
+        data = data.map(function(x){
+          if (x==Infinity){
+            return NaN;
+          } else {
+            return x;
+          }
+        });
+        return data;
+      }
+
+      return new this(data_clean(data), x_len, y_len)
+    }
+
+    /** Generate a matrix from data passed in the browser
+    * assign to window.onload to use
+    * @constructor
+    * @param {str} [file_tag] - the element id of a text input, to contain number of columns, default 'fileInput'.
+    * @param {str} [x_tag] - the element id of a text input, to contain number of columns, default 'x_len'.
+    * @param {str} [y_tag] - the element id of a text input, to contain number of rows, default 'y_len'.
+    * @param {str} [preview_tag] - the element id in which to display the string representation of the loaded matrix or any error, default 'preview'.
+    */
+    static OnLoad(file_tag='fileInput', x_tag='x_len', y_tag='y_len', preview_tag='preview'){
+      var fileInput = document.getElementById(file_tag);
+      var fileDisplayArea = document.getElementById(preview_tag);
+
+      fileInput.addEventListener('change', function(e) {
+          var file = fileInput.files[0];
+          var textType = /text.*/;
+
+          if (file.type.match(textType)) {
+              var reader = new FileReader();
+
+              var datamat;
+              reader.onload = function(e) {
+                  // catch erorrs in matrix creation
+                  try {
+                      var data = data_clean(reader.result);
+                      // get x and y sizes
+                      var x_len = document.getElementById(x_tag);
+                      var y_len = document.getElementById('y_tag');
+                      // make sure x and y are ints
+                      x_len = parseInt(x_len.value);
+                      y_len = parseInt(y_len.value);
+                      // create matrix
+                      datamat = new MiniMat(data, x_len, y_len);
+                      // display matrix out
+                      fileDisplayArea.innerText = datamat.toString();
+                  }
+                  catch (err) {
+                      // print erorrs in matrix creation
+                      fileDisplayArea.innerText = "ERROR LOADING: " + err.message;
+                  }
+              }
+
+              reader.readAsText(file);
+          } else {
+              fileDisplayArea.innerText = "File not supported!"
+          }
+      });
+    }
+
     /** make a matrix filled with ones
     * @constructor
     * @param {int} x_len - the number of columns.
