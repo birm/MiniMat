@@ -4,7 +4,11 @@
   "description": "Javascript library for matrix holding, representation, and processing",
     "devDependencies": {
       "tape" : "latest",
-      "jsdoc" : "latest"
+      "jsdoc" : "latest",
+      "gulp-conventional-changelog" : "latest",
+      "gulp-jsdoc" : "latest",
+      "gulp-git" : "latest",
+      "yargs" : "latest"
   },
   "main": "MiniMat.js",
   "scripts": {
