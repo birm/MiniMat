@@ -15,7 +15,7 @@ gulp.task('changelog', function () {
 });
 
 gulp.task('document', ['changelog'], function () {
-  return gulp.src("./src/MiniMat.js")
+  return gulp.src("./MiniMat.js")
   .pipe(jsdoc('./docs'))
 });
 
