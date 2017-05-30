@@ -241,18 +241,19 @@ class MiniMat {
         throw new Error("[Data Error] Matrices must share inner dimension size.");
       }
       // make a new minimat of the appropriate size
-      var res = MiniMat.Zeroes(this.x_len, mat.y_len);
+      var res = MiniMat.Zeroes(this.y_len, mat.x_len);
       // for each row of this,
-      for (let i=0; i<this.x_len; i++){
+      for (let i=0; i < this.y_len; i++){
         let tr = this.row(i);
-        let setvec = [];
-        for (let j=0; j<mat.y_len; j++){
+        let setvec = new Array(this.x_len);
+        setvec.fill(0);
+        for (let j=0; j < mat.x_len; j++){
           let tc = this.col(j);
           for (let k=0; k<tr.data.length; k++){
             setvec[j] += tc.data[k]*tr.data[k];
           }
+          res.col_set(i, setvec);
         }
-        res.col_set(i, setvec);
       }
       return res;
     }

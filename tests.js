@@ -59,13 +59,16 @@ test( 'representation tests', function(t) {
 });
 
 test( 'mathematical operation tests', function(t) {
-    t.plan(8);
+    t.plan(9);
 
     // test in place schur
     t.equal( MiniMat.FilledMat(3, 2, 4).schur(MiniMat.FilledMat(3, 2, 4)).toString(true), MiniMat.FilledMat(3, 2, 16).toString(true), "Test matrix schur product");
 
     // test apply via inverse
     t.equal( MiniMat.FilledMat(2, 2, 4).elem_inv().toString(true), MiniMat.FilledMat(2, 2, 0.25).toString(true), "Test apply and inverse");
+
+    // test product
+    t.equal( MiniMat.FilledMat(3, 2, 4).product(MiniMat.FilledMat(2, 3, 4)).toString(true), MiniMat.FilledMat(2, 2, 32).toString(true), "Test matrix schur product");
 
     // test norms
     // l-2 norm
