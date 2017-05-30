@@ -243,8 +243,10 @@ class MiniMat {
       // make a new minimat of the appropriate size
       var res = MiniMat.Zeroes(this.x_len, mat.y_len);
       // for each row of this,
-      //  calculate partial products on new one, adding to existing one
-      // return the new matrix
+      for (let row of this.rows()){
+        // calculate partial products on new one, adding to existing one
+      }
+      return res;
     }
 
     // in place elementwise addition
