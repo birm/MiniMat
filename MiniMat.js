@@ -90,6 +90,16 @@ class MiniMat {
         return new MiniMat(this.data.slice(first_data_pos, last_data_pos), Math.abs(to_index-index)+1, y_len);
     }
 
+    /** Get rows as a generator
+     */
+    * rows(){
+      var ind = 0;
+      while (ind < this.y_len){
+        yield this.row(ind);
+        ind ++;
+      }
+    }
+
     /** Set a row's data in place.
     * @param {int} index - which row to change
     * @param {Object[]} data - the data to change the row to
@@ -147,6 +157,15 @@ class MiniMat {
         return new MiniMat(out_data, x_len, Math.abs(to_index-index)+1);
     }
 
+    /** Get columns as a generator
+     */
+    * cols(){
+      var ind = 0;
+      while (ind < this.y_len){
+        yield this.col(ind);
+        ind ++;
+      }
+    }
     /** Set a columns data in place.
     * @param {int} index - which column to change
     * @param {Object[]} data - the data to change the column to
@@ -212,9 +231,36 @@ class MiniMat {
       }
       return this;
     }
+
+    /** Perform a matrix product, NOT in place; returns new mat.
+    * @param {MiniMat} mat - Another matrix to use for values for the operation
+    */
+    product(mat){
+      // make sure they're compatible
+      if (!(this.y_len === mat.x_len)){
+        throw new Error("[Data Error] Matrices must share inner dimension size.");
+      }
+      // make a new minimat of the appropriate size
+      var res = MiniMat.Zeroes(this.y_len, mat.x_len);
+      // for each row of this,
+      for (let i=0; i < this.y_len; i++){
+        let tr = this.row(i);
+        let setvec = new Array(this.x_len);
+        setvec.fill(0);
+        for (let j=0; j < mat.x_len; j++){
+          let tc = this.col(j);
+          for (let k=0; k<tr.data.length; k++){
+            setvec[j] += tc.data[k]*tr.data[k];
+          }
+          res.col_set(i, setvec);
+        }
+      }
+      return res;
+    }
+
     // in place elementwise addition
     add(mat){
-      var ipadd =function(a,b) {return a+b;}
+      var ipadd = function(a,b) {return a+b;}
       return this.elementwise(mat, ipadd);
     }
 
