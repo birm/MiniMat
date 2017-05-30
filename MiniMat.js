@@ -235,7 +235,7 @@ class MiniMat {
     /** Perform a matrix product, NOT in place; returns new mat.
     * @param {MiniMat} mat - Another matrix to use for values for the operation
     */
-    product(mat, operation){
+    product(mat){
       // make sure they're compatible
       if (!(this.y_len === mat.x_len)){
         throw new Error("[Data Error] Matrices must share inner dimension size.");
@@ -243,15 +243,23 @@ class MiniMat {
       // make a new minimat of the appropriate size
       var res = MiniMat.Zeroes(this.x_len, mat.y_len);
       // for each row of this,
-      for (let row of this.rows()){
-        // calculate partial products on new one, adding to existing one
+      for (let i=0; i<this.x_len; i++){
+        let tr = this.row(i);
+        let setvec = [];
+        for (let j=0; j<mat.y_len; j++){
+          let tc = this.col(j);
+          for (let k=0; k<tr.data.length; k++){
+            setvec[j] += tc.data[k]*tr.data[k];
+          }
+        }
+        res.col_set(i, setvec);
       }
       return res;
     }
 
     // in place elementwise addition
     add(mat){
-      var ipadd =function(a,b) {return a+b;}
+      var ipadd = function(a,b) {return a+b;}
       return this.elementwise(mat, ipadd);
     }
 
