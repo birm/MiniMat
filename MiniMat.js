@@ -90,6 +90,16 @@ class MiniMat {
         return new MiniMat(this.data.slice(first_data_pos, last_data_pos), Math.abs(to_index-index)+1, y_len);
     }
 
+    /** Get rows as a generator
+     */
+    * rows(){
+      var ind = 0;
+      while (ind < this.y_len){
+        yield this.row(ind);
+        ind ++;
+      }
+    }
+
     /** Set a row's data in place.
     * @param {int} index - which row to change
     * @param {Object[]} data - the data to change the row to
@@ -147,6 +157,15 @@ class MiniMat {
         return new MiniMat(out_data, x_len, Math.abs(to_index-index)+1);
     }
 
+    /** Get columns as a generator
+     */
+    * cols(){
+      var ind = 0;
+      while (ind < this.y_len){
+        yield this.col(ind);
+        ind ++;
+      }
+    }
     /** Set a columns data in place.
     * @param {int} index - which column to change
     * @param {Object[]} data - the data to change the column to
@@ -218,7 +237,11 @@ class MiniMat {
     */
     product(mat, operation){
       // make sure they're compatible
+      if (!(this.y_len === mat.x_len)){
+        throw new Error("[Data Error] Matrices must share inner dimension size.");
+      }
       // make a new minimat of the appropriate size
+      var res = MiniMat.Zeroes(this.x_len, mat.y_len);
       // for each row of this,
       //  calculate partial products on new one, adding to existing one
       // return the new matrix
