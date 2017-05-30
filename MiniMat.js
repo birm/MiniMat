@@ -212,6 +212,18 @@ class MiniMat {
       }
       return this;
     }
+
+    /** Perform a matrix product, NOT in place; returns new mat.
+    * @param {MiniMat} mat - Another matrix to use for values for the operation
+    */
+    product(mat, operation){
+      // make sure they're compatible
+      // make a new minimat of the appropriate size
+      // for each row of this,
+      //  calculate partial products on new one, adding to existing one
+      // return the new matrix
+    }
+
     // in place elementwise addition
     add(mat){
       var ipadd =function(a,b) {return a+b;}
